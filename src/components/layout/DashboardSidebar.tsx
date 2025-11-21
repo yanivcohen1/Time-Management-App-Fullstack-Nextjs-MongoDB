@@ -34,7 +34,7 @@ const navItems: NavItem[] = [
     icon: <ShieldRoundedIcon />,
     children: [
       { label: "Console", icon: <ShieldRoundedIcon />, href: "/admin" },
-      { label: "Inter workspace", icon: <DescriptionRoundedIcon />, href: "/admin/inter/3?id=1&name=yar" }
+      { label: "Inter workspace", icon: <DescriptionRoundedIcon />, href: "/admin/inner/2?id=1&name=yar" }
     ]
   }
 ];
@@ -45,8 +45,10 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
   const router = useRouter();
   const { data: session } = useSession();
   const { mutateAsync: logout, isPending: isLoggingOut } = useLogout();
+  const shouldExpandAdminGroup = (path: string) => path === "/admin" || path.startsWith("/admin/");
+
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    Admin: pathname === "/admin" || pathname.startsWith("/admin/")
+    Admin: shouldExpandAdminGroup(pathname)
   });
 
   const initials = useMemo(() => {
@@ -132,15 +134,12 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
   };
 
   useEffect(() => {
-    const isAdminPath = pathname === "/admin" || pathname.startsWith("/admin/");
+    const shouldExpand = shouldExpandAdminGroup(pathname);
     setExpandedGroups((prev) => {
-      if (isAdminPath && !prev.Admin) {
-        return { ...prev, Admin: true };
+      if (prev.Admin === shouldExpand) {
+        return prev;
       }
-      if (!isAdminPath && prev.Admin) {
-        return { ...prev, Admin: false };
-      }
-      return prev;
+      return { ...prev, Admin: shouldExpand };
     });
   }, [pathname]);
 

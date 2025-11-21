@@ -2,6 +2,7 @@
 
 import { FormControlLabel, Paper, Stack, Switch, Typography } from "@mui/material";
 import { useParams, useSearchParams } from "next/navigation";
+import { AdminOverviewCard } from "../../../_components/AdminOverviewCard";
 import { useAdminSwitch } from "../../../AdminLayout";
 
 const getQueryValue = (searchParams: ReturnType<typeof useSearchParams>, key: string) => {
@@ -27,17 +28,7 @@ function AdminUserContent({
 
   return (
     <Stack spacing={2}>
-      <Paper sx={{ p: 3, borderRadius: 3 }}>
-        <Stack spacing={1}>
-          <Typography variant="h4" fontWeight={700}>
-            Admin details
-          </Typography>
-          <Typography variant="body1">Admin id from path: {adminId}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            The breadcrumb command navigates here via /admin/3/user/2?id=1&name=yar, so this section shows admin id:3 for that URL.
-          </Typography>
-        </Stack>
-      </Paper>
+      <AdminOverviewCard adminId={adminId} />
 
       <Paper sx={{ p: 3, borderRadius: 3 }}>
         <Stack spacing={1}>

@@ -1,12 +1,12 @@
 "use client";
 
 import { Paper, Stack, Typography } from "@mui/material";
-import { useParams } from "next/navigation";
 
-export default function AdminDetailsPage() {
-  const params = useParams<{ adminId?: string }>();
-  const adminId = params?.adminId ?? "Unknown";
+export type AdminOverviewCardProps = {
+  adminId: string;
+};
 
+export function AdminOverviewCard({ adminId }: AdminOverviewCardProps) {
   return (
     <Paper sx={{ p: 3, borderRadius: 3 }}>
       <Stack spacing={1.5}>
