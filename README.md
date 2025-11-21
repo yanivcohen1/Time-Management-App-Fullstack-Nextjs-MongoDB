@@ -99,3 +99,9 @@ Use the Todo page "Show user info" button to verify which account is active; the
 ├── vitest.config.ts       # Vitest test runner configuration
 └── package.json           # Scripts and dependencies
 ```
+
+<img width="2730" height="1816" alt="image" src="https://github.com/user-attachments/assets/5e6b062b-1dfb-4574-af68-e1aa70b38ab4" />
+
+<img width="2689" height="1610" alt="image" src="https://github.com/user-attachments/assets/44c559b9-a1a7-4998-b2ed-709f3b38bb6d" />
+
+
