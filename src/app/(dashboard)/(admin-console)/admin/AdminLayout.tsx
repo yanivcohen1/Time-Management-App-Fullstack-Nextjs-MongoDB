@@ -1,13 +1,13 @@
 "use client";
 
-import { ReactNode, createContext, useContext, useMemo, useState, createRef } from "react";
+import { ReactNode, createContext, useContext, useState, useMemo } from "react";
 import { Box, Button, CircularProgress, FormControlLabel, Paper, Stack, Switch, Typography } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { MenuItem } from "primereact/menuitem";
-import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { useSession } from "@/hooks/useAuth";
 import { tokenStorage } from "@/lib/http/token-storage";
+import { AdminPageTransition } from "./_components/AdminPageTransition";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -43,11 +43,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     setInterWorkspaceEnabled(enabled);
   };
   
-  const nodeRef = useMemo(() => {
-    return createRef<HTMLDivElement>();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transitionKey]);
-
   const breadcrumbItems: MenuItem[] = useMemo(
     () => [
       {
@@ -156,11 +151,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               </Stack>
             </Paper>
 
-            <SwitchTransition mode="out-in">
-              <CSSTransition key={transitionKey} nodeRef={nodeRef} classNames="slide" timeout={{ enter: 500, exit: 500 }} unmountOnExit appear>
-                <div ref={nodeRef}>{children}</div>
-              </CSSTransition>
-            </SwitchTransition>
+            <AdminPageTransition>{children}</AdminPageTransition>
           </Stack>
         </Box>
       </main>

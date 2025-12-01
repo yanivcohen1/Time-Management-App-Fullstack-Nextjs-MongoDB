@@ -2,7 +2,6 @@
 
 import { FormControlLabel, Paper, Stack, Switch, Typography } from "@mui/material";
 import { useParams, useSearchParams } from "next/navigation";
-import { AdminOverviewCard } from "../../../_components/AdminOverviewCard";
 import { useAdminSwitch } from "../../../AdminLayout";
 
 const getQueryValue = (searchParams: ReturnType<typeof useSearchParams>, key: string) => {
@@ -14,12 +13,10 @@ const getQueryValue = (searchParams: ReturnType<typeof useSearchParams>, key: st
 };
 
 function AdminUserContent({
-  adminId,
   userId,
   queryId,
   queryName
 }: {
-  adminId: string;
   userId: string;
   queryId: string;
   queryName: string;
@@ -27,14 +24,11 @@ function AdminUserContent({
   const { interWorkspaceEnabled, setInterWorkspaceEnabled } = useAdminSwitch();
 
   return (
-    <Stack spacing={2}>
-      <AdminOverviewCard adminId={adminId} />
-
-      <Paper sx={{ p: 3, borderRadius: 3 }}>
-        <Stack spacing={1}>
-          <Typography variant="h4" fontWeight={700}>
-            User details
-          </Typography>
+    <Paper sx={{ p: 3, borderRadius: 3 }}>
+      <Stack spacing={1}>
+        <Typography variant="h4" fontWeight={700}>
+          User details
+        </Typography>
           <Typography variant="body1">User id from path: {userId}</Typography>
           <Typography variant="body2" color="text.secondary">
             Query parameters
@@ -50,22 +44,18 @@ function AdminUserContent({
                 checked={interWorkspaceEnabled}
                 onChange={(_, checked) => setInterWorkspaceEnabled(checked)}
               />
-            }
-            label={interWorkspaceEnabled ? "User workspace enabled" : "User workspace disabled"}
-          />
-        </Stack>
-      </Paper>
-    </Stack>
+          }
+          label={interWorkspaceEnabled ? "User workspace enabled" : "User workspace disabled"}
+        />
+      </Stack>
+    </Paper>
   );
-}
-
-export default function AdminUserPage() {
+}export default function AdminUserPage() {
   const params = useParams<{ adminId?: string; userId?: string }>();
   const searchParams = useSearchParams();
-  const adminId = params?.adminId ?? "Unknown";
   const userId = params?.userId ?? "Unknown";
   const queryId = getQueryValue(searchParams, "id");
   const queryName = getQueryValue(searchParams, "name");
 
-  return <AdminUserContent adminId={adminId} userId={userId} queryId={queryId} queryName={queryName} />;
+  return <AdminUserContent userId={userId} queryId={queryId} queryName={queryName} />;
 }
