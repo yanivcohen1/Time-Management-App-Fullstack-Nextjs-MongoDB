@@ -2,12 +2,15 @@
 
 import { ReactNode, createContext, useContext, useState, useMemo } from "react";
 import { Box, Button, CircularProgress, FormControlLabel, Paper, Stack, Switch, Typography } from "@mui/material";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useParams, useSearchParams } from "next/navigation";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { MenuItem } from "primereact/menuitem";
 import { useSession } from "@/hooks/useAuth";
 import { tokenStorage } from "@/lib/http/token-storage";
 import { AdminPageTransition } from "./_components/AdminPageTransition";
+import { AdminOverviewCard } from "./_components/AdminOverviewCard";
+import { UserOverviewCard } from "./_components/UserOverviewCard";
+import { AdminProvider } from "./_components/AdminContext";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -31,6 +34,22 @@ export function useAdminSwitch() {
 export function AdminLayout({ children }: AdminLayoutProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const adminId = params?.adminId as string | undefined;
+  const userId = params?.userId as string | undefined;
+
+  const getQueryValue = (key: string) => {
+    const value = searchParams.getAll(key);
+    if (value.length === 0) {
+      return "Not provided";
+    }
+    return value.join(", ");
+  };
+
+  const queryId = getQueryValue("id");
+  const queryName = getQueryValue("name");
+
   const { data: session, isLoading: sessionLoading, isError: sessionError } = useSession();
   const hasToken = !!tokenStorage.getAccessToken();
   const [activeView, setActiveView] = useState<"admin" | "user">(() => (pathname?.includes("/user/") ? "user" : "admin"));
@@ -150,8 +169,22 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 </Typography>
               </Stack>
             </Paper>
-
-            <AdminPageTransition>{children}</AdminPageTransition>
+              <Stack spacing={3}>
+                {adminId ? (
+                  <AdminProvider>
+                    <AdminOverviewCard adminId={adminId} />
+                    {userId ? (
+                      <>
+                        <UserOverviewCard userId={userId} queryId={queryId} queryName={queryName} />
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </AdminProvider>
+                ) : (
+                  <></>
+                )}
+              </Stack>
           </Stack>
         </Box>
       </main>
