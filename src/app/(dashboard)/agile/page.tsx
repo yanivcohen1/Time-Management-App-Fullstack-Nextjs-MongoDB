@@ -7,6 +7,7 @@ import { useTodos, useUpdateTodo } from "@/hooks/useTodos";
 import { TodoStatus, TODO_STATUSES } from "@/types/todo";
 import { tokenStorage } from "@/lib/http/token-storage";
 import { useSession } from "@/hooks/useAuth";
+import { AgileTodoCard } from "./AgileTodoCard";
 
 export default function AgilePage() {
   const { data, isLoading } = useTodos({});
@@ -133,34 +134,12 @@ export default function AgilePage() {
                           .map((todo, index) => (
                             <Draggable key={todo.id} draggableId={todo.id} index={index}>
                               {(provided, snapshot) => (
-                                <Card
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  sx={{
-                                    cursor: "grab",
-                                    "&:hover": { boxShadow: theme.shadows[4] },
-                                    transition: "box-shadow 0.2s",
-                                    ...provided.draggableProps.style,
-                                    opacity: snapshot.isDragging ? 0.8 : 1
-                                  }}
-                                >
-                                  <CardContent>
-                                    <Typography variant="subtitle1" fontWeight={600} gutterBottom>
-                                      {todo.title}
-                                    </Typography>
-                                    {todo.description && (
-                                      <Typography variant="body2" color="text.secondary" noWrap>
-                                        {todo.description}
-                                      </Typography>
-                                    )}
-                                    {todo.dueDate && (
-                                      <Typography variant="caption" display="block" mt={1} color="text.secondary">
-                                        Due: {new Date(todo.dueDate).toLocaleDateString()}
-                                      </Typography>
-                                    )}
-                                  </CardContent>
-                                </Card>
+                                <AgileTodoCard
+                                  todo={todo}
+                                  provided={provided}
+                                  snapshot={snapshot}
+                                  updateTodo={updateTodo}
+                                />
                               )}
                             </Draggable>
                           ))}
