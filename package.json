@@ -17,6 +17,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^3.9.1",
     "@mikro-orm/core": "^5.9.8",
     "@mikro-orm/migrations-mongodb": "^5.9.8",

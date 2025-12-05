@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useMemo } from "react";
+import { createContext, useContext, useState, useMemo, ReactNode } from "react";
 import { Box, Button, CircularProgress, FormControlLabel, Paper, Stack, Switch, Typography } from "@mui/material";
 import { usePathname, useRouter, useParams, useSearchParams } from "next/navigation";
 import { BreadCrumb } from "primereact/breadcrumb";
@@ -26,7 +26,7 @@ export function useAdminSwitch() {
   return context;
 }
 
-export function AdminLayout() {
+export function AdminLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
@@ -156,6 +156,7 @@ export function AdminLayout() {
               />
             </Stack>
             <Stack spacing={3}>
+              {children}
               {adminId ? (
                 <AdminProvider>
                   <AdminOverviewCard adminId={adminId} key={adminId}/>

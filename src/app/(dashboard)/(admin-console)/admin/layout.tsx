@@ -1,7 +1,18 @@
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import "@/animation/slide-right.css";
 import { AdminLayout } from "./AdminLayout";
+import { CircularProgress, Box } from "@mui/material";
 
 export default function AdminRouteLayout({ children }: { children: ReactNode }) {
-  return <AdminLayout>{children}</AdminLayout>;
+  return (
+    <Suspense
+      fallback={
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+          <CircularProgress />
+        </Box>
+      }
+    >
+      <AdminLayout>{children}</AdminLayout>
+    </Suspense>
+  );
 }
