@@ -59,6 +59,7 @@ export function TodoList({ todos, onEdit, onDelete }: Props) {
             <CardHeader
               title={todo.title}
               subheader={todo.description}
+              sx={{ pb: 0 }}
               action={
                 <Stack direction="row" spacing={1}>
                   <IconButton aria-label="edit" onClick={() => onEdit(todo)}>
@@ -70,7 +71,7 @@ export function TodoList({ todos, onEdit, onDelete }: Props) {
                 </Stack>
               }
             />
-            <CardContent>
+            <CardContent sx={{ pt: 1 }}>
               <Stack direction="row" alignItems="center" spacing={2}>
                 <Chip icon={<Icon />} label={meta.label} color={meta.color} variant="outlined" />
                 {todo.duration ? (
