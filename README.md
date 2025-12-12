@@ -23,8 +23,9 @@ Full-stack Next.js(React) 16 application built with Material UI, MikroORM, and M
 - Role-aware dashboard layouts (admin, inter, main, todo) backed by protected App Router routes and filtered navigation.
 - Admin console breadcrumb with PrimeReact icons that jumps between `/admin/1` and `/admin/3/user/2?id=1&name=yar`, showing the active admin/user IDs and query params inside shared layout panels, plus an Inter workspace deep-link at `/admin/inter/3?id=1&name=yar` that opens its own guarded page with the legacy Inter content and surfaces `inter_id`, `id`, and `name` parameters.
 - Todo management with filtering, dialog-driven CRUD, and status summaries powered by React Query.
+- Track task duration in minutes/hours with support for viewing and editing on both list and board views.
 - Agile Scrum board with drag-and-drop support for managing todo statuses (Backlog, Pending, In Progress, Completed).
-- Inplace editing for tasks on the Agile board (Title, Description, Due Date) with delete functionality.
+- Inplace editing for tasks on the Agile board (Title, Description, Due Date, Duration) with delete functionality.
 - Quick profile inspector on the Todo page that pings the API and surfaces the current name + role via snackbar.
 - Built-in rate limiting, password hashing, and JWT session utilities for secure APIs.
 - Responsive Material UI theme with dark/light toggle and reusable layout components.
@@ -58,7 +59,7 @@ pnpm lint              # Next.js lint (ESLint)
 pnpm test              # Vitest unit tests
 pnpm test:watch        # Vitest in watch mode
 pnpm coverage          # Vitest coverage report
-pnpm db:seed           # seed demo user/todos via MikroORM
+pnpm seed:db           # seed demo user/todos via MikroORM
 pnpm test:e2e          # Cypress end-to-end tests with reporter (runs `cross-env CYPRESS_REPORTER=cypress-mochawesome-reporter cypress run --e2e --browser chrome`)
 pnpm test:e2e:no-report # Cypress end-to-end tests without reporter (runs `cypress run --e2e --browser chrome`)
 ```
@@ -67,9 +68,9 @@ Run `npx cypress install` once per environment to ensure the browser binaries re
 
 ### Seeding
 
-Ensure `DATABASE_URL` and the desired seed credentials are set, then run `pnpm db:seed`. The script wipes users/todos/refresh tokens and repopulates them with:
+Ensure `DATABASE_URL` and the desired seed credentials are set, then run `pnpm seed:db`. The script wipes users/todos/refresh tokens and repopulates them with:
 
-- `demo@todo.dev` / `SEED_ADMIN_PASSWORD` – admin role with seeded sample todos
+- `demo@todo.dev` / `SEED_ADMIN_PASSWORD` – admin role with seeded sample todos (including duration)
 - `user1@todo.dev` / `SEED_USER_PASSWORD` – standard user without admin privileges
 
 Use the Todo page "Show user info" button to verify which account is active; the snackbar displays the signed-in user's name and role.
@@ -78,7 +79,7 @@ Use the Todo page "Show user info" button to verify which account is active; the
 
 1. Start MongoDB (local service, container, or Atlas cluster).
 2. Configure `.env.development`.
-3. `pnpm db:seed` (optional) for demo data.
+3. `pnpm seed` (optional) for demo data.
 4. `pnpm dev` to launch the Next.js dev server at `http://localhost:3000`.
 
 ### Deployment Notes
