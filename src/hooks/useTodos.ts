@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { format } from "date-fns";
 import { api } from "@/lib/http/client";
 import { tokenStorage } from "@/lib/http/token-storage";
 import type { TodoFilterInput, UpsertTodoInput } from "@/lib/validation/todo";
@@ -18,7 +19,14 @@ export const useTodos = (filters: Partial<TodoFilterInput>) =>
   useQuery<TodosResponse>({
     queryKey: ["todos", filters],
     queryFn: async () => {
-      const { data } = await api.get("/api/auth/todos", { params: filters });
+      const params: Record<string, any> = { ...filters };
+      if (filters.dueStart) {
+        params.dueStart = format(filters.dueStart, "yyyy-MM-dd");
+      }
+      if (filters.dueEnd) {
+        params.dueEnd = format(filters.dueEnd, "yyyy-MM-dd");
+      }
+      const { data } = await api.get("/api/auth/todos", { params });
       return data;
     },
     enabled: typeof window !== "undefined" && !!tokenStorage.getAccessToken()
