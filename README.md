@@ -91,23 +91,45 @@ Use the Todo page "Show user info" button to verify which account is active; the
 ### Project Structure
 
 ```
-├── docs/                  # Architecture notes and technical overviews
-├── public/                # Static assets served by Next.js
-├── scripts/               # Seed and maintenance scripts (e.g., MikroORM seeding)
-├── src/
-│   ├── app/               # App Router routes (auth, dashboard, API endpoints)
-│   ├── components/        # Reusable UI widgets (auth forms, todos, layout pieces)
-│   ├── hooks/             # Client hooks for auth, theme mode, and todos
-│   ├── lib/               # Env, API, auth, db, and validation helpers
-│   ├── theme/             # Material UI theme tokens
-│   └── types/             # Shared TypeScript models
-├── tests/                 # E2E Cypress specs
-├── eslint.config.mjs      # Next.js lint configuration
-├── mikro-orm.config.ts    # MikroORM + Mongo connection + seeding config
-├── next.config.ts         # Next.js runtime config
-├── cypress.config.ts      # Cypress runner configuration
+. (repo root)
+├── cypress.config.ts      # Cypress runner configuration (E2E)
+├── eslint.config.mjs      # ESLint config for the project
+├── mikro-orm.config.ts    # MikroORM + Mongo config and seeding
+├── next.config.ts         # Next.js runtime configuration
+├── package.json           # Scripts and dependencies
+├── pnpm-lock.yaml         # pnpm lockfile (exact dependency versions)
+├── pnpm-workspace.yaml    # pnpm workspace configuration
+├── README.md              # Project README (this file)
+├── tsconfig.json          # TypeScript compiler options
 ├── vitest.config.ts       # Vitest test runner configuration
-└── package.json           # Scripts and dependencies
+├── public/                # Static assets served by Next.js
+├── scripts/               # Seed & maintenance scripts
+│   └── seed.ts            # Database seeding script (MikroORM)
+├── src/                   # Application source code
+│   ├── app/               # App Router routes and pages (layouts, providers)
+│   │   ├── layout.tsx     # Root layout component
+│   │   ├── page.tsx       # Root page entry
+│   │   ├── providers.tsx  # App-level providers (theme, auth)
+│   │   └── (dashboard)/   # Dashboard route group
+│   ├── components/        # Reusable UI components
+│   │   ├── auth/          # Auth-related components (forms, dialogs)
+│   │   ├── common/        # Generic shared components
+│   │   ├── dashboard/     # Dashboard-specific components
+│   │   ├── layout/        # Layout pieces (sidebar, header)
+│   │   └── todos/         # Todo list / dialog components
+│   ├── hooks/             # Client hooks (useAuth, useTodos, theme)
+│   │   ├── useAuth.ts
+│   │   ├── useThemeMode.ts
+│   │   └── useTodos.ts
+│   ├── lib/               # Helpers: API clients, auth, DB, validation
+│   │   ├── api/           # HTTP API helpers
+│   │   ├── auth/          # JWT, session, password utilities
+│   │   ├── db/            # DB client, entities, serializers
+│   │   └── http/          # HTTP client + token storage
+│   ├── theme/             # Material UI theme tokens and helpers
+│   └── types/             # Shared TypeScript types/models
+├── docs/                  # Architecture notes and technical overviews
+├── cypress/               # E2E specs, reports, screenshots
 ```
 
 ## Testing
