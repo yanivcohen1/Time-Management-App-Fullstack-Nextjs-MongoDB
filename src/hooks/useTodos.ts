@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format, endOfDay } from "date-fns";
 import { api } from "@/lib/http/client";
 import { tokenStorage } from "@/lib/http/token-storage";
+import { showSnackbar } from "@/lib/ui/snackbar";
 import type { TodoFilterInput, UpsertTodoInput } from "@/lib/validation/todo";
 import type { TodoDTO } from "@/types/todo";
 
@@ -41,6 +42,10 @@ export const useCreateTodo = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
+      showSnackbar({
+        message: "Todo created successfully",
+        severity: "success"
+      });
     }
   });
 };
@@ -55,6 +60,10 @@ export const useUpdateTodo = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
+      showSnackbar({
+        message: "Todo updated successfully",
+        severity: "success"
+      });
     }
   });
 };
@@ -67,6 +76,10 @@ export const useDeleteTodo = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
+      showSnackbar({
+        message: "Todo deleted successfully",
+        severity: "success"
+      });
     }
   });
 };

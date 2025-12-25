@@ -1,51 +1,26 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
-import { Alert, IconButton, Snackbar } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import { snackbarStore, type SnackbarMessage } from "@/lib/ui/snackbar";
+import { ReactNode, useEffect } from "react";
+import { SnackbarProvider as NotistackProvider, useSnackbar } from "notistack";
+import { setEnqueueSnackbar } from "@/lib/ui/snackbar";
 
-type SnackbarState = SnackbarMessage & { open: boolean };
-
-export function SnackbarProvider({ children }: { children: ReactNode }) {
-  const [snackbar, setSnackbar] = useState<SnackbarState | null>(null);
+function GlobalSnackbarSetter() {
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    const unsubscribe = snackbarStore.subscribe((message) => {
-      setSnackbar({ ...message, open: true });
+    setEnqueueSnackbar((message, options) => {
+      enqueueSnackbar(message, options);
     });
+  }, [enqueueSnackbar]);
 
-    return unsubscribe;
-  }, []);
+  return null;
+}
 
-  const handleClose = (_?: unknown, reason?: string) => {
-    if (reason === "clickaway") return;
-    setSnackbar((current) => (current ? { ...current, open: false } : current));
-  };
-
+export function SnackbarProvider({ children }: { children: ReactNode }) {
   return (
-    <>
+    <NotistackProvider maxSnack={3}>
+      <GlobalSnackbarSetter />
       {children}
-      {snackbar ? (
-        <Snackbar
-          open={snackbar.open}
-          autoHideDuration={5000}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <Alert
-            severity={snackbar.severity ?? "info"}
-            variant="filled"
-            action={
-              <IconButton aria-label="Close" color="inherit" size="small" onClick={() => handleClose()}>
-                <CloseIcon fontSize="small" />
-              </IconButton>
-            }
-          >
-            {snackbar.message}
-          </Alert>
-        </Snackbar>
-      ) : null}
-    </>
+    </NotistackProvider>
   );
 }

@@ -5,24 +5,19 @@ export type SnackbarMessage = {
   severity?: SnackbarSeverity;
 };
 
-type Listener = (message: SnackbarMessage) => void;
+type Variant = "default" | "info" | "error" | "success" | "warning";
 
-const listeners = new Set<Listener>();
+type EnqueueSnackbar = (message: string, options?: { variant?: Variant }) => void;
 
-export const snackbarStore = {
-  subscribe(callback: Listener) {
-    listeners.add(callback);
-    return () => {
-      listeners.delete(callback);
-    };
-  },
-  publish(message: SnackbarMessage) {
-    listeners.forEach((listener) => {
-      listener(message);
-    });
-  }
+let enqueueSnackbar: EnqueueSnackbar | null = null;
+
+export const setEnqueueSnackbar = (fn: EnqueueSnackbar) => {
+  enqueueSnackbar = fn;
 };
 
 export const showSnackbar = (message: SnackbarMessage) => {
-  snackbarStore.publish(message);
+  if (enqueueSnackbar) {
+    const variant: Variant = message.severity || "info";
+    enqueueSnackbar(message.message, { variant });
+  }
 };
